@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const resetPwd = sequelize.define('forgetpassword' ,{
+const resetPwd = sequelize.define(process.env.DB_FORGOT ,{
     id: {
         type: Sequelize.UUID,
         primaryKey: true,

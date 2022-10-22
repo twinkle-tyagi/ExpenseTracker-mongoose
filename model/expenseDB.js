@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const expense = sequelize.define('expenseTable', {
+const expense = sequelize.define(process.env.DB_EXPENSE, {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,

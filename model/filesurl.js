@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const filesUploaded = sequelize.define('filesurl', {
+const filesUploaded = sequelize.define(process.env.DB_FILES, {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
