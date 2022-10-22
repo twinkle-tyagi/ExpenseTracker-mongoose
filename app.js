@@ -1,5 +1,11 @@
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
+
+//const privateKey = fs.readFileSync('server.key');
+//const certificate = fs.readFileSync('server.cert');
+
+console.log("mmmmmmmmmmmmmmmmmmm",privateKey)
 
 const accessLogStream = fs.createWriteStream('access.log', {flag: 'a'})
 
@@ -48,5 +54,7 @@ User.hasMany(filesUploaded);
 sequelize.sync()
 .then(res => {
     app.listen(process.env.PORT_NUMBER || 3000);
+    //https.createServer({key: privateKey, cert: certificate}, app)
+    //.listen(process.env.PORT_NUMBER || 3000);
 })
 .catch(err => console.log(err));
