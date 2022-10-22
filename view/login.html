@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script src="script1.js" async> </script>
+</head>
+<body>
+    <form onsubmit="authenticate(event)" method="POST">
+        <h1> Login </h1>
+        <label for="login-email"> Enter your email: </label>
+        <input type="text" name="email" id="login-email">
+        <label for="login-password"> Enter password:</label>
+        <input type="password" name="password" id="login-password">
+        <button type="submit" id="login-btn"> Login </button>
+        <button type="button" id="forget-btn" onclick="forgotPwd()"> Forget Passowrd </button>
+        <input type="text" id="enter-email" style="display: none;" placeholder="Enter email-id">
+        <button type="button" id="forget-btn-submit" onclick="forgotPassword()" style="display: none;"> Forget Passowrd </button>
+        <a href="signup.html">New User - Signup Now</a>
+    </form>
+
+    <ul id="response">
+
+    </ul>
+</body>
+</html>

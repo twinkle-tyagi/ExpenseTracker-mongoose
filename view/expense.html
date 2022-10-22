@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses</title>
+
+    <style>
+        #premium-btn {
+            display: inline;
+            float: right;
+            margin-top: 0px;
+            border: none;
+            color: blue;
+            background-color: white;
+        }
+        #premium-btn a {
+            text-decoration: none;
+        }
+        #premium-btn:active {
+            color: white;
+            background-color: black;
+        }
+
+        span {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="expenses(event)">
+        <label for="expense"> Expenses </label>
+        <input type="text" name="expense" id="expense">
+        <label for="description"> Description </label>
+        <input type="text" name="description" id="description">
+        <label for="category"> Category </label>
+        <select id="category" name="category">
+            <option value="food"> Food </option>
+            <option value="rent"> Rent </option>
+            <option value="cloths"> Cloths </option>
+            <option value="gift"> Gift </option>
+        </select>
+        <input type="hidden" id="id" name="id">
+
+        <button type="submit"> Submit </button>
+        <button type="button" id="premium-btn" onclick="createOrder()"> *Buy Premium* </a> </button>
+        <button type="button" id="download-btn" style="display:none;" onclick="download()"> download </button>
+    </form>
+
+    
+
+    <ul id="add-expense">
+
+    </ul>
+    <span id="pagination">
+
+    </span>
+    Items per page: <select id="item-per-page" name="item-per-page">
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+    </select>
+
+    leaderboard :
+    <ul id="leaderboard" style="margin-left: 20px;">
+        <li> <span>name</span>
+            <span>Expenses</span>
+            <span>Description</span>
+            <span>Category</span> 
+        </li>
+
+    </ul>
+<!--
+    <ul id="monthly-exp">
+        <li> 
+            <span>Date</span>
+            <span>Expense</span>
+            <span>Description</span>
+            <span>Category</span>
+        </li>
+    </ul>
+-->
+
+</body>
+</html>
+
+<script src="expenses.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

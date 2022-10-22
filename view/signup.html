@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" async> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    
+</head>
+<body>
+    <form id="signup-form" onsubmit="sendData(event)">
+        <h1> Sign-Up </h1> 
+        <label for="name"> Enter your name </label>
+        <input type="text" name="name" id="name" required> <br>
+
+        <label for="email"> Enter email </label>
+        <input type="text" name="email" id="email" required> <br>
+        
+        <label for="password"> Enter your password </label>
+        <input type="password" name="password" id="password" required> <br>
+        
+        <button type="submit" id="signup-btn">SIGNUP</button>
+        <a href="login.html">Existing User - Login </a>
+        
+    </form>
+
+    <ul id="response">
+
+    </ul>
+</body>
+</html>
