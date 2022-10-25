@@ -31,7 +31,7 @@ exports.forgetPassword = (req, res, next) => {
         from: 'twinkletyagi.1@gmail.com',
         subject: "reset password link",
         text: "this is nice msgs",
-        html: `<a href="http://3.91.239.252:3001/password/resetpassword/${id}"> Reset Password </a>`
+        html: `<a href="http://3.91.239.252:3000/password/resetpassword/${id}"> Reset Password </a>`
     }
 
     sendgrid.send(msg)
