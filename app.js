@@ -55,7 +55,7 @@ User.hasMany(filesUploaded);
 
 sequelize.sync()
 .then(res => {
-    app.listen(process.env.PORT_NUMBER || 3001);
+    app.listen(process.env.PORT_NUMBER || 3000);
     //https.createServer({key: privateKey, cert: certificate}, app)
     //.listen(process.env.PORT_NUMBER || 3000);
 })
