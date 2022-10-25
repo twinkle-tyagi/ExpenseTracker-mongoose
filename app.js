@@ -28,10 +28,11 @@ const expenseRoutes = require('./routes/expenseRoute');
 const passwordRoutes = require('./routes/forgetPassword');
 
 const app = express();
-
+/*
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, `view/${req.url}`));
 })
+*/
 
 app.use(morgan('combined', {stream: accessLogStream}));
 app.use(cors());
