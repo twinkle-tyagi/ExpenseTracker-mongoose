@@ -26,7 +26,7 @@ function sendData(event) {
 
     console.log(obj);
 
-    axios.post('http://localhost:3000/user/signup', obj)
+    axios.post('http://3.91.239.252:3001/user/signup', obj)
     .then(result => {
         console.log(result.data.message);
         child.innerText = result.data.message;

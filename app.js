@@ -29,6 +29,10 @@ const passwordRoutes = require('./routes/forgetPassword');
 
 const app = express();
 
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, `view/${req.url}`));
+})
+
 app.use(morgan('combined', {stream: accessLogStream}));
 app.use(cors());
 app.use(bodyParser.json());
@@ -51,7 +55,7 @@ User.hasMany(filesUploaded);
 
 sequelize.sync()
 .then(res => {
-    app.listen(process.env.PORT_NUMBER || 3000);
+    app.listen(process.env.PORT_NUMBER || 3001);
     //https.createServer({key: privateKey, cert: certificate}, app)
     //.listen(process.env.PORT_NUMBER || 3000);
 })

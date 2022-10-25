@@ -5,7 +5,7 @@ const verifySign = require('../middleware/verifySign');
 
 const routers = express.Router();
 
-routers.get('/expense/getExpenses/?page', userAuth.authenticate, expenseRouter.getExpenses);
+routers.get('/expense/getExpenses', userAuth.authenticate, expenseRouter.getExpenses);
 
 routers.post('/expense/addExpenses', userAuth.authenticate, expenseRouter.postExpenses);
 
