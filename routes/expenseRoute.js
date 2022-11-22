@@ -11,15 +11,15 @@ routers.post('/expense/addExpenses', userAuth.authenticate, expenseRouter.postEx
 
 routers.delete('/expense/deleteExpense/:id', userAuth.authenticate, expenseRouter.deleteExpense);
 
-routers.get('/expense/getLeaderBoard', expenseRouter.getLeaderBoard);
+// routers.get('/expense/getLeaderBoard', expenseRouter.getLeaderBoard);
 
 routers.post('/order/createOrder', userAuth.authenticate, expenseRouter.createNewOrder);
 
 routers.post('/order/payment', userAuth.authenticate, expenseRouter.postOrder);
 
-routers.get('/user/download', userAuth.authenticate, expenseRouter.downloadExpense);
+// routers.get('/user/download', userAuth.authenticate, expenseRouter.downloadExpense);
 
-routers.get('/expense/filesDownloaded', userAuth.authenticate, expenseRouter.getFiles);
+// routers.get('/expense/filesDownloaded', userAuth.authenticate, expenseRouter.getFiles);
 
 routers.get('/', userAuth.authenticate, expenseRouter.getIndex);
 

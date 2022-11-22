@@ -21,7 +21,7 @@ function authenticate(event) {
     const parent = document.getElementById('response');
     var child = document.createElement('li');
 
-    axios.post('http://3.91.239.252:3000/user/authenticate', obj)
+    axios.post('http://localhost:3000/user/authenticate', obj)
     .then(result => {
         console.log("yes");
         //console.log(result);
@@ -52,7 +52,7 @@ function forgotPwd() {
 function forgotPassword() {
     const email = document.getElementById('enter-email').value;
     console.log(email);
-    axios.post('http://3.91.239.252:3000/called/password/forgotpassword', {email: email})
+    axios.post('http://localhost:3000/called/password/forgotpassword', {email: email})
     .then(password => {
         console.log(password);
     })

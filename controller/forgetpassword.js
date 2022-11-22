@@ -2,9 +2,8 @@ const sendgrid = require('@sendgrid/mail');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 
-const ResetReq = require('../model/forgetPasswordRequest');
+//const ResetReq = require('../model/forgetPasswordRequest');
 const User = require('../model/user');
-const { use } = require('../routes/forgetPassword');
 
 exports.forgetPassword = (req, res, next) => {
     console.log(req.body.email);  
@@ -12,16 +11,14 @@ exports.forgetPassword = (req, res, next) => {
 
     const id = uuid.v4();
 
-    User.findOne({where: {email: req.body.email}})
-    .then(user => {
-        console.log("getting user id ", user.id);
+    User.find({email: req.body.email})
+    .then(users => {
+        const user = users[0];
+        console.log("getting user id ", user._id);
 
 
         if(user) {
-            user.createForgetpassword({
-                id: id,
-                isActive: true
-            })
+            user.createForgetpassword({id:id, isActive: true});
         }
     })
     .catch(err => console.log(err));
@@ -31,7 +28,7 @@ exports.forgetPassword = (req, res, next) => {
         from: 'twinkletyagi.1@gmail.com',
         subject: "reset password link",
         text: "this is nice msgs",
-        html: `<a href="http://3.91.239.252:3000/password/resetpassword/${id}"> Reset Password </a>`
+        html: `<a href="http://localhost:3000/password/resetpassword/${id}"> Reset Password </a>`
     }
 
     sendgrid.send(msg)
@@ -47,9 +44,11 @@ exports.forgetPassword = (req, res, next) => {
 exports.resetPassword = (req, res, next) => {
     const id = req.params.id;
     console.log(id);
-    ResetReq.findOne({where: {id: id}})
-    .then(user => {
-        user.update({isActive: false});
+    User.find({"forgetPassword._id" : id})
+    .then(users => {
+        const user = users[0];
+        console.log("'''''''''''''''''''''''''''''''''''''''", user);
+        user.createForgetpassword({id: id, isActive: false});
         res.status(200).send(`
         <html>
         <form action="/password/updatepassword/${id}" method="GET">
@@ -69,12 +68,12 @@ exports.updatePassword = (req, res, next) => {
 
     console.log("values ==========================", id, newPassword);
 
-    ResetReq.findOne({where: {id: id}})
+    User.find({"forgetPassword._id": id})
     .then(users => {
-        console.log("this is", users);
-        return User.findOne({where: {id: users.userId}});
-    })
-    .then(user => {
+        const user = users[0];
+        console.log("this is", user);
+        //return User.findOne({where: {id: users.userId}});
+
         const saltRounds = 10;
 
         //console.log("user is ", user)
@@ -94,8 +93,9 @@ exports.updatePassword = (req, res, next) => {
             if(err) {
                 throw new Error(err);
             }
-
-            user.update({password: hash})
+            console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,')
+            
+            user.updatepwd({id: id, password: hash})
             .then(() => {
                 res.status(200).json({message: "successfully changed password"});
             })

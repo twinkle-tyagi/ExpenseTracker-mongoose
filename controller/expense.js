@@ -2,7 +2,6 @@ const User =  require('../model/user');
 const ExpenseDB = require('../model/expenseDB');
 const Order = require('../model/orderDB');
 const FilesUrl = require('../model/filesurl');
-const UserServices = require('../services/userservices');
 const S3Services = require('../services/S3services');
 
 const AWS = require('aws-sdk');
@@ -15,12 +14,15 @@ exports.getIndex = async (req, res) => {
     try {
 
         const ITEMS_PER_PAGE = +req.header('ITEMS_PER_PAGE');
-        console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", ITEMS_PER_PAGE);
+        //console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", ITEMS_PER_PAGE);
         const page = +req.query.page || 1;
 
         const totalPage = await ExpenseDB.count();
 
-        var expenses = await req.user.getExpenseTables({offset:(page-1)*ITEMS_PER_PAGE , limit: ITEMS_PER_PAGE});
+
+
+        const expenses = await ExpenseDB.find({userId: req.user._id}).skip((page-1)*ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+        //var expenses = await req.user.getExpenseTables({offset:(page-1)*ITEMS_PER_PAGE , limit: ITEMS_PER_PAGE});
 
         var obj = {
             expenses: expenses,
@@ -98,11 +100,12 @@ exports.postExpenses = async (req, res, next) => {
 
 exports.deleteExpense = async (req, res, next) => {
     const id = req.params.id
-    //console.log("delete expense ============", req.params.id);
+    console.log("delete expense ============", req.params.id);
 
-    const expense = await ExpenseDB.findAll({where: {id: id}});
+    await ExpenseDB.findByIdAndDelete(id);
+    res.status(200);
 
-    expense[0].destroy();
+    //expense[0].destroy();
 }
 
 exports.getLeaderBoard = async (req, res, next) => {
@@ -139,7 +142,7 @@ exports.createNewOrder = async (req, res, next) => {
     //console.log("/////////////////////////////////",process.env.RAZORPAY_KEY_ID, process.env.RAZORPAY_KEY_SECRET);
     
     instance.orders.create(options, (err, order) => {
-        //console.log("order is",order.id);
+        console.log("order is",order.id);
         //console.log("err is", err);
 
         res.json({order, key_id: instance.key_id});
@@ -162,28 +165,19 @@ exports.createNewOrder = async (req, res, next) => {
 exports.postOrder = async (req, res, next) => {
 
     //console.log("here in post", req);
-    //console.log("user", req.user);
+    console.log("user", req.user);
     try {
-        await Order.create({
+        const order = {
             paymentId: req.body.razorpay_payment_id,
             orderId: req.body.razorpay_order_id,
             signature: req.body.razorpay_signature,
             status: "successful",
             userId: req.user.id
-        })
-
-        Order.findAll({where: {orderId: req.body.razorpay_order_id}})
-        .then((order) => {
-            //console.log(order);
-            if(order[0].status == "successful") {
-                req.user.update({isPremium: true})
-                res.status(200).json({message: "Successfully Saved"});
-            }
-        })
-        .catch(err => console.log(err));
+        };
         
-    
-        //res.status(200).json({message: "Successfully Saved"});
+        req.user.createOrder(order);
+
+        res.status(200).json({message: "Successfully Saved"});
     }
     catch(err) {
         console.log(err);

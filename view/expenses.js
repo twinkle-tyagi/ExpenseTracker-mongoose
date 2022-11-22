@@ -27,7 +27,7 @@ function expenses (e) {
 
     console.log(obj);
 
-    axios.post('http://3.91.239.252:3000/expense/addExpenses', obj, {headers: {Authorization: token}})
+    axios.post('http://localhost:3000/expense/addExpenses', obj, {headers: {Authorization: token}})
     .then(result => {
         addToPage(obj);
     })
@@ -42,12 +42,12 @@ function addToPage(obj) {
 
     const child = document.createElement('li');
 
-    const node = `<li id = "${obj.id}">  
+    const node = `<li id = "${obj._id}">  
     <span> Expenses = "${obj.expense}" </span>
     <span> Description = "${obj.description}" </span>
     <span> Category = "${obj.category} "</span>
     <button type="button" onclick =  "" > Edit </button>
-    <button type="button" onclick = "deleteExpense(${obj.id})"> Delete </button>
+    <button type="button" onclick = "deleteExpense('${obj._id}')"> Delete </button>
     </li> `
 
     child.innerHTML = node;
@@ -58,9 +58,9 @@ function addToPage(obj) {
 function deleteExpense(id) {
 
     const token = localStorage.getItem('token');
-    //console.log(token)
+    console.log(token, id)
 
-    axios.delete(`http://3.91.239.252:3000/expense/deleteExpense/${id}`, {headers: {Authorization: token}})
+    axios.delete(`http://localhost:3000/expense/deleteExpense/${id}`, {headers: {Authorization: token}})
     .then(result => {
         deleteFromPage(id);
     })
@@ -76,7 +76,7 @@ function deleteFromPage(id) {
 
 function createOrder() {
     var x =0;
-    axios.post('http://3.91.239.252:3000/order/createOrder', x, {headers: {Authorization: token}})
+    axios.post('http://localhost:3000/order/createOrder', x, {headers: {Authorization: token}})
     .then(order => {
         console.log("order data", order);
         //localStorage.setItem("order", JSON.stringify(order.data));
@@ -114,12 +114,13 @@ function checkout(order) {
 
             //order_id = order.id;
 
-            axios.post('http://3.91.239.252:3000/order/payment', response, {headers: {Authorization: token}})
+            axios.post('http://localhost:3000/order/payment', response, {headers: {Authorization: token}})
             .then(res => {
                 console.log("done");
                 console.log(res);
                 alert("You are a premium user now");
                 premium = 1;
+                localStorage.setItem('isPremium', true);
                 premiumUser();
             })
             .catch(err => console.log(err));
@@ -151,7 +152,7 @@ function premiumUser() {
 }
 
 function download() {
-    axios.get('http://3.91.239.252:3000/user/download', {headers: {Authorization: token}})
+    axios.get('http://localhost:3000/user/download', {headers: {Authorization: token}})
     .then(response => {
         if(response.status === 200) {
             var a = document.createElement('a');
@@ -179,7 +180,7 @@ window.addEventListener('DOMContentLoaded', () => {
         leaderBoard();
     }
 /*
-    axios.get('http://3.91.239.252:3000/expense/filesDownloaded', {headers: {Authorization: token}})
+    axios.get('http://localhost:3000/expense/filesDownloaded', {headers: {Authorization: token}})
     .then(url =>  {
         console.log("this is url");
     }).catch(err => console.log(err));
@@ -187,7 +188,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const page=1;
 
-    axios.get(`http://3.91.239.252:3000/?page=${page}`, {headers: {Authorization: token, ITEMS_PER_PAGE: ITEMS_PER_PAGE}})
+    axios.get(`http://localhost:3000/?page=${page}`, {headers: {Authorization: token, ITEMS_PER_PAGE: ITEMS_PER_PAGE}})
     .then(result => {
         //console.log("here I am", result);
         //console.log("pagination " ,result);
@@ -234,7 +235,7 @@ function pagination(res) {
 
 async function getExpense(Page) {
     document.getElementById('add-expense').innerHTML = "";
-    var res = await axios.get(`http://3.91.239.252:3000/?page=${Page}`, {headers: {Authorization: token, ITEMS_PER_PAGE: ITEMS_PER_PAGE}});
+    var res = await axios.get(`http://localhost:3000/?page=${Page}`, {headers: {Authorization: token, ITEMS_PER_PAGE: ITEMS_PER_PAGE}});
     pagination(res);
     for(var i =0; i<res.data.expenses.length; i++){
         addToPage(res.data.expenses[i]);
@@ -243,7 +244,7 @@ async function getExpense(Page) {
 
 
 function leaderBoard() {
-    axios.get('http://3.91.239.252:3000/expense/getLeaderBoard')
+    axios.get('http://localhost:3000/expense/getLeaderBoard')
     .then(users => {
         console.log("hey", users.data);
         for(var i =0; i<users.data.length; i++) {
@@ -274,4 +275,10 @@ function showAllUsers(user) {
     child.innerHTML = child.innerHTML + node;
     }
     parent.appendChild(child);
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('isPremium');
+    window.location.href = 'login.html';
 }

@@ -13,15 +13,16 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 dotenv.config();
 
-const sequelize = require('./util/database');
+//const sequelize = require('./util/database');
 const Expense = require('./model/expenseDB');
 const User = require('./model/user');
-const Order = require('./model/orderDB');
-const resetRequest = require('./model/forgetPasswordRequest');
-const filesUploaded = require('./model/filesurl');
+// const Order = require('./model/orderDB');
+//const resetRequest = require('./model/forgetPasswordRequest');
+// const filesUploaded = require('./model/filesurl');
 
 const routes = require('./routes/routes');
 const expenseRoutes = require('./routes/expenseRoute');
@@ -44,20 +45,19 @@ app.use(helmet());
 
 
 //Expense.belongsTo(User);
-User.hasOne(Expense);
-User.hasMany(Expense);
+// User.hasOne(Expense);
+// User.hasMany(Expense);
 
-Order.belongsTo(User);
+// Order.belongsTo(User);
 
-User.hasMany(resetRequest);
+// User.hasMany(resetRequest);
 
-User.hasMany(filesUploaded);
+// User.hasMany(filesUploaded);
 
 
-sequelize.sync()
+mongoose.connect(`mongodb+srv://${process.env.MONGO_HOST}:${process.env.MONGO_PASSWORD}@cluster0.1ub4dke.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`)
 .then(res => {
-    app.listen(process.env.PORT_NUMBER || 3000);
-    //https.createServer({key: privateKey, cert: certificate}, app)
-    //.listen(process.env.PORT_NUMBER || 3000);
+    console.log("connected");
+    app.listen(3000);
 })
 .catch(err => console.log(err));
